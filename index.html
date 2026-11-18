@@ -1,0 +1,432 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickBite - Food Delivery</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #f7f8fa;
+  color: #222;
+}
+
+header {
+  background: #ff6b35;
+  color: white;
+  padding: 25px 8%;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.cart-btn {
+  background: white;
+  color: #ff6b35;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.hero {
+  padding: 40px 8%;
+  background: #fff0e8;
+}
+
+.hero h1 {
+  font-size: 38px;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.search {
+  width: 100%;
+  max-width: 500px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  outline: none;
+  font-size: 16px;
+}
+
+.container {
+  padding: 30px 8%;
+}
+
+.categories {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 20px 0 30px;
+}
+
+.category-btn {
+  border: none;
+  background: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #0000000d;
+}
+
+.category-btn.active,
+.category-btn:hover {
+  background: #ff6b35;
+  color: white;
+}
+
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 22px;
+}
+
+.food-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px #0000000d;
+  transition: 0.2s;
+}
+
+.food-card:hover {
+  transform: translateY(-4px);
+}
+
+.food-img {
+  width: 100%;
+  height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 90px;
+  background: #fff0e8;
+}
+
+.food-info {
+  padding: 18px;
+}
+
+.food-info h3 {
+  margin-bottom: 8px;
+}
+
+.food-info p {
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.food-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  color: #ff6b35;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.add-btn {
+  background: #ff6b35;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background: #e85625;
+}
+
+.cart-panel {
+  display: none;
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  margin-top: 30px;
+  box-shadow: 0 4px 15px #00000012;
+}
+
+.cart-panel.show {
+  display: block;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.qty-controls button {
+  padding: 6px 11px;
+  border: none;
+  background: #ff6b35;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.total {
+  margin-top: 20px;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 15px;
+  background: #21a366;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.checkout-btn:hover {
+  background: #16844e;
+}
+
+footer {
+  text-align: center;
+  padding: 30px;
+  background: #222;
+  color: white;
+  margin-top: 40px;
+}
+
+@media(max-width:600px) {
+  .hero h1 {
+    font-size: 28px;
+  }
+  .food-img {
+    height: 150px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">🍔 QuickBite</div>
+    <button class="cart-btn" onclick="toggleCart()">
+      🛒 Cart (<span id="cart-count">0</span>)
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Hungry? We've got you! 🍕</h1>
+  <p>Delicious food delivered straight to your door.</p>
+  <input
+    type="text"
+    id="search"
+    class="search"
+    placeholder="🔍 Search your favorite food..."
+    oninput="renderFoods()"
+  >
+</section>
+
+<main class="container">
+  <h2>Explore Menu</h2>
+
+  <div class="categories" id="categories"></div>
+
+  <div class="food-grid" id="food-grid"></div>
+
+  <section class="cart-panel" id="cart-panel">
+    <h2>🛒 Your Shopping Cart</h2>
+    <div id="cart-items"></div>
+    <div class="total" id="cart-total">Total: ₱0.00</div>
+    <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 QuickBite Food Delivery | Made with ❤️</p>
+</footer>
+
+<script>
+const foods = [
+  {id:1, name:"Cheese Burger", category:"Burgers", price:120, emoji:"🍔", desc:"Juicy burger with melted cheese"},
+  {id:2, name:"Double Burger", category:"Burgers", price:180, emoji:"🍔", desc:"Double beef, double cheese"},
+  {id:3, name:"Pepperoni Pizza", category:"Pizza", price:250, emoji:"🍕", desc:"Classic pepperoni and cheese"},
+  {id:4, name:"Hawaiian Pizza", category:"Pizza", price:230, emoji:"🍕", desc:"Ham and sweet pineapple"},
+  {id:5, name:"Fried Chicken", category:"Chicken", price:99, emoji:"🍗", desc:"Crispy golden fried chicken"},
+  {id:6, name:"Chicken Wings", category:"Chicken", price:150, emoji:"🍗", desc:"Flavorful crispy wings"},
+  {id:7, name:"French Fries", category:"Snacks", price:75, emoji:"🍟", desc:"Crispy salted potato fries"},
+  {id:8, name:"Milk Tea", category:"Drinks", price:85, emoji:"🧋", desc:"Creamy milk tea with pearls"},
+  {id:9, name:"Iced Coffee", category:"Drinks", price:90, emoji:"🧋", desc:"Refreshing iced coffee"},
+  {id:10, name:"Donut", category:"Desserts", price:55, emoji:"🍩", desc:"Sweet glazed donut"}
+];
+
+let cart = [];
+let selectedCategory = "All";
+
+const categories = ["All", ...new Set(foods.map(f => f.category))];
+
+function renderCategories() {
+  document.getElementById("categories").innerHTML =
+    categories.map(cat => `
+      <button class="category-btn ${selectedCategory === cat ? "active" : ""}"
+        onclick="selectCategory('${cat}')">${cat}</button>
+    `).join("");
+}
+
+function selectCategory(category) {
+  selectedCategory = category;
+  renderCategories();
+  renderFoods();
+}
+
+function renderFoods() {
+  const search = document.getElementById("search").value.toLowerCase();
+
+  const filtered = foods.filter(food => {
+    const matchesCategory = selectedCategory === "All" || food.category === selectedCategory;
+    const matchesSearch = food.name.toLowerCase().includes(search);
+    return matchesCategory && matchesSearch;
+  });
+
+  document.getElementById("food-grid").innerHTML = filtered.map(food => `
+    <div class="food-card">
+      <div class="food-img">${food.emoji}</div>
+      <div class="food-info">
+        <h3>${food.name}</h3>
+        <p>${food.desc}</p>
+        <div class="food-bottom">
+          <span class="price">₱${food.price.toFixed(2)}</span>
+          <button class="add-btn" onclick="addToCart(${food.id})">+ Add</button>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  if(filtered.length === 0) {
+    document.getElementById("food-grid").innerHTML =
+      "<p>No food found. Try another search.</p>";
+  }
+}
+
+function addToCart(id) {
+  const food = foods.find(f => f.id === id);
+  const existing = cart.find(item => item.id === id);
+
+  if(existing) {
+    existing.qty++;
+  } else {
+    cart.push({...food, qty:1});
+  }
+
+  renderCart();
+}
+
+function changeQty(id, amount) {
+  const item = cart.find(item => item.id === id);
+  if(!item) return;
+
+  item.qty += amount;
+
+  if(item.qty <= 0) {
+    cart = cart.filter(item => item.id !== id);
+  }
+
+  renderCart();
+}
+
+function renderCart() {
+  const count = cart.reduce((sum, item) => sum + item.qty, 0);
+  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+  document.getElementById("cart-count").textContent = count;
+
+  document.getElementById("cart-items").innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div>
+        <strong>${item.emoji} ${item.name}</strong><br>
+        <small>₱${item.price} each</small>
+      </div>
+      <div class="qty-controls">
+        <button onclick="changeQty(${item.id},-1)">−</button>
+        <strong>${item.qty}</strong>
+        <button onclick="changeQty(${item.id},1)">+</button>
+      </div>
+    </div>
+  `).join("");
+
+  document.getElementById("cart-total").textContent =
+    "Total: ₱" + total.toFixed(2);
+}
+
+function toggleCart() {
+  const panel = document.getElementById("cart-panel");
+  panel.classList.toggle("show");
+  if(panel.classList.contains("show")) {
+    panel.scrollIntoView({behavior:"smooth"});
+  }
+}
+
+function checkout() {
+  if(cart.length === 0) {
+    alert("Your cart is empty! Add some food first.");
+    return;
+  }
+
+  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+  let message = "Your order:\\n\\n";
+  cart.forEach(item => {
+    message += `${item.name} x ${item.qty} = ₱${item.price * item.qty}\\n`;
+  });
+
+  message += `\\nTotal: ₱${total.toFixed(2)}\\n\\nThank you for ordering!`;
+
+  alert(message);
+
+  cart = [];
+  renderCart();
+  toggleCart();
+}
+
+renderCategories();
+renderFoods();
+renderCart();
+</script>
+
+</body>
+</html>
