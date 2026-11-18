@@ -1,0 +1,1118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickBite Pro | Food Delivery</title>
+
+<style>
+:root {
+  --orange: #ff6b35;
+  --orange-dark: #ed5421;
+  --bg: #fffaf7;
+  --text: #252525;
+  --muted: #777;
+  --white: #fff;
+  --green: #20a464;
+  --border: #eeeeee;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+header {
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav {
+  max-width: 1200px;
+  margin: auto;
+  padding: 18px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 900;
+  color: var(--orange);
+}
+
+.logo span {
+  color: #222;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn {
+  border: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: bold;
+  transition: .2s;
+}
+
+.btn-orange {
+  background: var(--orange);
+  color: white;
+}
+
+.btn-orange:hover {
+  background: var(--orange-dark);
+}
+
+.btn-light {
+  background: #fff0e8;
+  color: var(--orange);
+}
+
+.btn-dark {
+  background: #252525;
+  color: white;
+}
+
+.hero {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 22px;
+}
+
+.hero-banner {
+  background: linear-gradient(110deg, #ff6b35, #ff9d61);
+  color: white;
+  border-radius: 26px;
+  padding: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  min-height: 270px;
+}
+
+.hero-text {
+  max-width: 550px;
+}
+
+.hero h1 {
+  font-size: clamp(30px, 5vw, 52px);
+  margin-bottom: 16px;
+  line-height: 1.1;
+}
+
+.hero p {
+  margin-bottom: 22px;
+  opacity: .92;
+}
+
+.hero-banner img {
+  width: 290px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 20px;
+  transform: rotate(3deg);
+  box-shadow: 0 12px 35px #0002;
+}
+
+main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 10px 22px 60px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 25px 0 20px;
+  gap: 12px;
+}
+
+.section-heading h2 {
+  font-size: 25px;
+}
+
+.search {
+  width: 100%;
+  max-width: 330px;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 12px;
+  outline: none;
+}
+
+.search:focus {
+  border-color: var(--orange);
+}
+
+.categories {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 5px 0 18px;
+}
+
+.category {
+  border: 1px solid #eee;
+  background: white;
+  border-radius: 25px;
+  padding: 11px 20px;
+  white-space: nowrap;
+}
+
+.category.active {
+  background: var(--orange);
+  color: white;
+  border-color: var(--orange);
+}
+
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.food-card {
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.food-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px #00000010;
+}
+
+.food-card img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  background: #eee;
+}
+
+.food-info {
+  padding: 16px;
+}
+
+.food-info h3 {
+  margin-bottom: 8px;
+}
+
+.food-info p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  height: 38px;
+}
+
+.food-bottom {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.price {
+  color: var(--orange);
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.add-btn {
+  background: var(--orange);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: bold;
+}
+
+.add-btn:hover {
+  background: var(--orange-dark);
+}
+
+.empty {
+  grid-column: 1/-1;
+  text-align: center;
+  color: var(--muted);
+  padding: 40px;
+}
+
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: -450px;
+  width: min(430px, 100%);
+  height: 100%;
+  background: white;
+  z-index: 30;
+  padding: 24px;
+  transition: right .3s;
+  box-shadow: -10px 0 30px #0001;
+  overflow-y: auto;
+}
+
+.cart-drawer.open {
+  right: 0;
+}
+
+.drawer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.close-btn {
+  background: #f2f2f2;
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+}
+
+.cart-item img {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.cart-item-info {
+  flex: 1;
+}
+
+.cart-item-info small {
+  display: block;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 8px;
+  background: #fff0e8;
+  color: var(--orange);
+  font-weight: bold;
+}
+
+.summary {
+  margin-top: 20px;
+}
+
+.summary div {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+}
+
+.summary .grand-total {
+  font-size: 20px;
+  font-weight: bold;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}
+
+.full {
+  width: 100%;
+  margin-top: 15px;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #0007;
+  z-index: 20;
+}
+
+.overlay.show {
+  display: block;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 40;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 20px;
+  width: min(520px, 94%);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 25px;
+}
+
+.modal.show {
+  display: block;
+}
+
+.modal h2 {
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: white;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 75px;
+}
+
+.payment-note {
+  background: #eaf8ef;
+  padding: 14px;
+  border-radius: 12px;
+  margin: 15px 0;
+  font-size: 14px;
+}
+
+#admin-section {
+  display: none;
+}
+
+.admin-order {
+  background: white;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  margin-bottom: 15px;
+}
+
+.admin-order h3 {
+  margin-bottom: 8px;
+}
+
+.admin-order p {
+  margin: 6px 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.status-select {
+  padding: 10px;
+  border-radius: 9px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+
+.track-box {
+  background: #fff0e8;
+  border-radius: 14px;
+  padding: 16px;
+  margin: 18px 0;
+}
+
+.track-box h3 {
+  margin-bottom: 10px;
+  color: var(--orange);
+}
+
+footer {
+  background: #242424;
+  color: white;
+  padding: 35px 20px;
+  text-align: center;
+}
+
+footer p {
+  color: #bbb;
+  margin-top: 10px;
+}
+
+.toast {
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  color: white;
+  padding: 14px 22px;
+  border-radius: 12px;
+  display: none;
+  z-index: 100;
+}
+
+.toast.show {
+  display: block;
+}
+
+@media(max-width:900px) {
+  .food-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media(max-width:600px) {
+  .nav {
+    padding: 15px;
+  }
+
+  .logo {
+    font-size: 21px;
+  }
+
+  .nav-actions .btn {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .hero {
+    margin: 15px auto;
+  }
+
+  .hero-banner {
+    padding: 28px;
+    min-height: 230px;
+  }
+
+  .hero-banner img {
+    display: none;
+  }
+
+  main {
+    padding: 10px 15px 40px;
+  }
+
+  .section-heading {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search {
+    max-width: none;
+  }
+
+  .food-grid {
+    gap: 12px;
+  }
+
+  .food-card img {
+    height: 140px;
+  }
+
+  .food-info {
+    padding: 12px;
+  }
+
+  .food-info h3 {
+    font-size: 15px;
+  }
+
+  .food-bottom {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .add-btn {
+    width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">🍔 Quick<span>Bite</span> Pro</div>
+    <div class="nav-actions">
+      <button class="btn btn-light" onclick="showMenu()">🏠 Menu</button>
+      <button class="btn btn-light" onclick="showOrders()">📦 Orders</button>
+      <button class="btn btn-orange" onclick="openCart()">🛒 <span id="cart-count">0</span></button>
+    </div>
+  </nav>
+</header>
+
+<section class="hero" id="home-section">
+  <div class="hero-banner">
+    <div class="hero-text">
+      <h1>Good food.<br>Good mood. 😋</h1>
+      <p>Your favorite meals, delivered right to your doorstep.</p>
+      <button class="btn btn-dark" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">
+        Order Now →
+      </button>
+    </div>
+    <img
+      src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=700&q=85"
+      alt="Burger and fries">
+  </div>
+</section>
+
+<main>
+  <section id="menu">
+    <div class="section-heading">
+      <h2>🍽️ Our Menu</h2>
+      <input class="search" id="search" placeholder="🔍 Search food..." oninput="renderFoods()">
+    </div>
+
+    <div class="categories" id="categories"></div>
+    <div class="food-grid" id="food-grid"></div>
+  </section>
+
+  <section id="orders-section" style="display:none">
+    <div class="section-heading">
+      <h2>📦 My Orders</h2>
+    </div>
+    <div id="my-orders"></div>
+  </section>
+
+  <section id="admin-section">
+    <div class="section-heading">
+      <h2>⚙️ Admin Dashboard</h2>
+      <button class="btn btn-light" onclick="showMenu()">← Back to Menu</button>
+    </div>
+    <div id="admin-orders"></div>
+  </section>
+</main>
+
+<!-- Cart -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<aside class="cart-drawer" id="cart-drawer">
+  <div class="drawer-head">
+    <h2>🛒 Your Cart</h2>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div id="cart-items"></div>
+  <div class="summary">
+    <div><span>Subtotal</span><strong id="subtotal">₱0.00</strong></div>
+    <div><span>Delivery Fee</span><strong id="delivery">₱49.00</strong></div>
+    <div class="grand-total"><span>Total</span><strong id="total">₱0.00</strong></div>
+  </div>
+  <button class="btn btn-orange full" onclick="openCheckout()">Proceed to Checkout</button>
+</aside>
+
+<!-- Checkout -->
+<div class="modal" id="checkout-modal">
+  <div class="drawer-head">
+    <h2>📍 Checkout</h2>
+    <button class="close-btn" onclick="closeCheckout()">✕</button>
+  </div>
+
+  <form id="checkout-form">
+    <div class="form-group">
+      <label>Full Name</label>
+      <input name="customer" required placeholder="Enter your full name">
+    </div>
+
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input name="phone" type="tel" required placeholder="09XX XXX XXXX">
+    </div>
+
+    <div class="form-group">
+      <label>Delivery Address</label>
+      <textarea name="address" required placeholder="House number, street, barangay, city"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Delivery Instructions (Optional)</label>
+      <textarea name="notes" placeholder="Landmark, gate instructions, etc."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Payment Method</label>
+      <select name="payment" required>
+        <option value="Cash on Delivery">Cash on Delivery (COD)</option>
+        <option value="GCash">GCash (demo selection only)</option>
+      </select>
+    </div>
+
+    <div class="payment-note">
+      💵 Cash on Delivery is available in this demo. Online payments are not connected.
+    </div>
+
+    <div class="summary">
+      <div><span>Order Total</span><strong id="checkout-total">₱0.00</strong></div>
+    </div>
+
+    <button class="btn btn-orange full" type="submit">Place Order</button>
+  </form>
+</div>
+
+<footer>
+  <h2>🍔 QuickBite Pro</h2>
+  <p>Good food delivered with love.</p>
+  <p>© 2026 QuickBite Pro. All rights reserved.</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===============================
+// QuickBite Pro - Demo App
+// ===============================
+
+const DELIVERY_FEE = 49;
+
+const foods = [
+  {
+    id:1, name:"Classic Cheeseburger", category:"Burgers",
+    price:149, description:"Juicy beef, cheese, lettuce and sauce.",
+    image:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id:2, name:"Double Smash Burger", category:"Burgers",
+    price:199, description:"Two patties and extra melted cheese.",
+    image:"https://images.unsplash.com/photo-1553979459-d2229ba7433a?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id:3, name:"Pepperoni Pizza", category:"Pizza",
+    price:279, description:"Pepperoni, mozzarella and pizza sauce.",
+    image:"https://images.unsplash.com/photo-1628840042765-356cda07504f?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id:4, name:"Hawaiian Pizza", category:"Pizza",
+    price:259, description:"Ham, pineapple and mozzarella.",
+    image:"https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id:5, name:"Crispy Fried Chicken", category:"Chicken",
+    price:119, description:"Golden crispy chicken with rice.",
+    image:"https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id:6, name:"Chicken Wings", category:"Chicken",
+    price:169, description:"Savory wings with a tasty glaze.",
+    image:"https://images.unsplash.com/photo-1608039829572-78524f79c4c7?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id:7, name:"French Fries", category:"Snacks",
+    price:89, description:"Hot, golden and crispy fries.",
+    image:"https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id:8, name:"Loaded Nachos", category:"Snacks",
+    price:149, description:"Crunchy nachos with cheese toppings.",
+    image:"https://images.unsplash.com/photo-1513456852971-30c0a8b8e8d4?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id:9, name:"Iced Milk Tea", category:"Drinks",
+    price:99, description:"Creamy milk tea with tapioca pearls.",
+    image:"https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id:10, name:"Iced Coffee", category:"Drinks",
+    price:99, description:"Smooth coffee served over ice.",
+    image:"https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id:11, name:"Chocolate Donut", category:"Desserts",
+    price:69, description:"Soft donut with chocolate glaze.",
+    image:"https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=600&q=80"
+  },
+  {
+    id:12, name:"Strawberry Sundae", category:"Desserts",
+    price:109, description:"Ice cream topped with strawberry sauce.",
+    image:"https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80"
+  }
+];
+
+let cart = JSON.parse(localStorage.getItem("qb_cart") || "[]");
+let orders = JSON.parse(localStorage.getItem("qb_orders") || "[]");
+let currentCategory = "All";
+
+// Categories
+const categories = ["All", ...new Set(foods.map(f => f.category))];
+
+function money(value) {
+  return "₱" + Number(value).toLocaleString("en-PH", {
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
+}
+
+function saveData() {
+  localStorage.setItem("qb_cart", JSON.stringify(cart));
+  localStorage.setItem("qb_orders", JSON.stringify(orders));
+}
+
+function renderCategories() {
+  document.getElementById("categories").innerHTML = categories.map(category => `
+    <button class="category ${currentCategory === category ? "active" : ""}"
+      onclick="setCategory('${category}')">${category}</button>
+  `).join("");
+}
+
+function setCategory(category) {
+  currentCategory = category;
+  renderCategories();
+  renderFoods();
+}
+
+function renderFoods() {
+  const search = document.getElementById("search").value.toLowerCase();
+
+  const filtered = foods.filter(food => {
+    return (currentCategory === "All" || food.category === currentCategory)
+      && food.name.toLowerCase().includes(search);
+  });
+
+  const grid = document.getElementById("food-grid");
+
+  if(!filtered.length) {
+    grid.innerHTML = `<div class="empty">No foods found. Try another search.</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(food => `
+    <article class="food-card">
+      <img src="${food.image}" alt="${food.name}" loading="lazy"
+           onerror="this.src='https://placehold.co/600x400?text=QuickBite+Food'">
+      <div class="food-info">
+        <h3>${food.name}</h3>
+        <p>${food.description}</p>
+        <div class="food-bottom">
+          <span class="price">${money(food.price)}</span>
+          <button class="add-btn" onclick="addToCart(${food.id})">+ Add</button>
+        </div>
+      </div>
+    </article>
+  `).join("");
+}
+
+// Cart functions
+function addToCart(id) {
+  const food = foods.find(f => f.id === id);
+  const existing = cart.find(item => item.id === id);
+
+  if(existing) {
+    existing.qty++;
+  } else {
+    cart.push({...food, qty:1});
+  }
+
+  saveData();
+  renderCart();
+  toast(food.name + " added to cart!");
+}
+
+function updateQty(id, amount) {
+  const item = cart.find(i => i.id === id);
+  if(!item) return;
+
+  item.qty += amount;
+
+  if(item.qty <= 0) {
+    cart = cart.filter(i => i.id !== id);
+  }
+
+  saveData();
+  renderCart();
+}
+
+function getSubtotal() {
+  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+}
+
+function getTotal() {
+  return getSubtotal() + (cart.length ? DELIVERY_FEE : 0);
+}
+
+function renderCart() {
+  const count = cart.reduce((sum, item) => sum + item.qty, 0);
+  document.getElementById("cart-count").textContent = count;
+
+  const items = document.getElementById("cart-items");
+
+  if(!cart.length) {
+    items.innerHTML = `<div class="empty">Your cart is empty 🛒</div>`;
+  } else {
+    items.innerHTML = cart.map(item => `
+      <div class="cart-item">
+        <img src="${item.image}" alt="${item.name}">
+        <div class="cart-item-info">
+          <strong>${item.name}</strong>
+          <small>${money(item.price)} each</small>
+          <div class="qty">
+            <button onclick="updateQty(${item.id},-1)">−</button>
+            <span>${item.qty}</span>
+            <button onclick="updateQty(${item.id},1)">+</button>
+          </div>
+        </div>
+        <strong>${money(item.price * item.qty)}</strong>
+      </div>
+    `).join("");
+  }
+
+  document.getElementById("subtotal").textContent = money(getSubtotal());
+  document.getElementById("delivery").textContent = money(cart.length ? DELIVERY_FEE : 0);
+  document.getElementById("total").textContent = money(getTotal());
+  document.getElementById("checkout-total").textContent = money(getTotal());
+}
+
+function openCart() {
+  document.getElementById("cart-drawer").classList.add("open");
+  document.getElementById("overlay").classList.add("show");
+}
+
+function closeCart() {
+  document.getElementById("cart-drawer").classList.remove("open");
+  document.getElementById("overlay").classList.remove("show");
+}
+
+// Checkout
+function openCheckout() {
+  if(!cart.length) {
+    toast("Your cart is empty!");
+    return;
+  }
+
+  document.getElementById("checkout-total").textContent = money(getTotal());
+  closeCart();
+  document.getElementById("checkout-modal").classList.add("show");
+}
+
+function closeCheckout() {
+  document.getElementById("checkout-modal").classList.remove("show");
+}
+
+document.getElementById("checkout-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  if(!cart.length) {
+    toast("Your cart is empty.");
+    return;
+  }
+
+  const form = new FormData(e.target);
+
+  const order = {
+    id: "QB-" + Date.now().toString().slice(-7),
+    customer: form.get("customer"),
+    phone: form.get("phone"),
+    address: form.get("address"),
+    notes: form.get("notes"),
+    payment: form.get("payment"),
+    items: cart.map(item => ({...item})),
+    subtotal: getSubtotal(),
+    delivery: DELIVERY_FEE,
+    total: getTotal(),
+    status: "Order Received",
+    date: new Date().toLocaleString()
+  };
+
+  orders.unshift(order);
+  cart = [];
+
+  saveData();
+  renderCart();
+  closeCheckout();
+  e.target.reset();
+
+  showOrders();
+  toast("Order placed successfully! 🎉");
+
+  setTimeout(() => {
+    alert("Thank you for ordering from QuickBite Pro!\\nYour order number is " + order.id);
+  }, 150);
+});
+
+// Customer orders
+function showOrders() {
+  document.getElementById("menu").style.display = "none";
+  document.getElementById("home-section").style.display = "none";
+  document.getElementById("orders-section").style.display = "block";
+  document.getElementById("admin-section").style.display = "none";
+
+  const mine = document.getElementById("my-orders");
+
+  if(!orders.length) {
+    mine.innerHTML = `<div class="empty">You haven't placed an order yet.</div>`;
+    return;
+  }
+
+  mine.innerHTML = orders.map(order => `
+    <div class="admin-order">
+      <h3>Order #${order.id}</h3>
+      <p>📅 ${order.date}</p>
+      <p>📦 Status: <strong>${order.status}</strong></p>
+      <p>💰 Total: <strong>${money(order.total)}</strong></p>
+      <p>💳 Payment: ${order.payment}</p>
+      <div class="track-box">
+        <h3>🚚 Order Status</h3>
+        <p>${getStatusMessage(order.status)}</p>
+      </div>
+      <details>
+        <summary>View order details</summary>
+        <p style="margin-top:10px">${order.items.map(i => `${i.name} × ${i.qty}`).join("<br>")}</p>
+        <p>Delivery to: ${order.address}</p>
+      </details>
+    </div>
+  `).join("");
+}
+
+function getStatusMessage(status) {
+  const messages = {
+    "Order Received":"Your order has been received by QuickBite.",
+    "Preparing":"The kitchen is preparing your delicious food.",
+    "Ready for Pickup":"Your order is ready for the rider.",
+    "Out for Delivery":"Your rider is on the way! 🛵",
+    "Delivered":"Enjoy your meal! Thank you for ordering. ❤️",
+    "Cancelled":"This order has been cancelled."
+  };
+
+  return messages[status] || status;
+}
+
+// Menu navigation
+function showMenu() {
+  document.getElementById("menu").style.display = "block";
+  document.getElementById("home-section").style.display = "block";
+  document.getElementById("orders-section").style.display = "none";
+  document.getElementById("admin-section").style.display = "none";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+// Admin dashboard
+function openAdmin() {
+  const password = prompt("Enter demo admin password:");
+  if(password !== "admin123") {
+    if(password !== null) toast("Incorrect admin password.");
+    return;
+  }
+
+  renderAdmin();
+  document.getElementById("menu").style.display = "none";
+  document.getElementById("home-section").style.display = "none";
+  document.getElementById("orders-section").style.display = "none";
+  document.getElementById("admin-section").style.display = "block";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function renderAdmin() {
+  const container = document.getElementById("admin-orders");
+
+  if(!orders.length) {
+    container.innerHTML = `<div class="empty">No orders yet.</div>`;
+    return;
+  }
+
+  const statuses = [
+    "Order Received",
+    "Preparing",
+    "Ready for Pickup",
+    "Out for Delivery",
+    "Delivered",
+    "Cancelled"
+  ];
+
+  container.innerHTML = orders.map(order => `
+    <div class="admin-order">
+      <h3>🧾 ${order.id}</h3>
+      <p>Customer: <strong>${order.customer}</strong></p>
+      <p>Phone: ${order.phone}</p>
+      <p>Address: ${order.address}</p>
+      <p>Items: ${order.items.map(i => `${i.name} × ${i.qty}`).join(", ")}</p>
+      <p>Payment: ${order.payment}</p>
+      <p>Total: <strong>${money(order.total)}</strong></p>
+      <p>Placed: ${order.date}</p>
+      <label>Update order status:</label><br>
+      <select class="status-select" onchange="changeStatus('${order.id}',this.value)">
+        ${statuses.map(status => `
+          <option value="${status}" ${order.status === status ? "selected" : ""}>
+            ${status}
+          </option>
+        `).join("")}
+      </select>
+    </div>
+  `).join("");
+}
+
+function changeStatus(id, status) {
+  const order = orders.find(o => o.id === id);
+  if(!order) return;
+
+  order.status = status;
+  saveData();
+  renderAdmin();
+  toast("Order status updated!");
+}
+
+// Toast
+function toast(message) {
+  const t = document.getElementById("toast");
+  t.textContent = message;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2500);
+}
+
+// Admin entry: hidden in footer shortcut
+document.querySelector("footer").addEventListener("dblclick", openAdmin);
+
+// Initial load
+renderCategories();
+renderFoods();
+renderCart();
+</script>
+
+</body>
+</html>
